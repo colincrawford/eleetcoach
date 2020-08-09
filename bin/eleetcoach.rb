@@ -4,15 +4,12 @@ Dir[File.join(__dir__, '..', 'app', '*.rb')].each { |file| require file }
 
 logger = Logger.new(STDOUT)
 
-config = nil
 config_file_flag_inx = ARGV.find_index("--config")
-
-if !config_file_flag_inx.nil?
+config_file = nil
+unless config_file_flag_inx.nil?
   config_file = ARGV[config_file_flag_inx + 1]
-  config = Config.new(logger: logger, config_file: config_file)
-else
-  config = Config.new(logger: logger)
 end
+config = Config.new(logger: logger, config_file: config_file)
 
 leetcode = Leetcode::Client.new(logger: logger)
 mailer = GMail.new(
@@ -22,6 +19,7 @@ mailer = GMail.new(
 )
 app = App.new(
   logger: logger,
+  minimum_difficulty: config.minimum_difficulty,
   leetcode: leetcode,
   mailer: mailer,
   problem_email_factory: ProblemEmail::Factory,

@@ -1,6 +1,7 @@
 class App
-  def initialize(logger:, leetcode:, mailer:, problem_email_factory:, send_list:)
+  def initialize(logger:, leetcode:, minimum_difficulty:, mailer:, problem_email_factory:, send_list:)
     @logger = logger
+    @minimum_difficulty = minimum_difficulty
     @leetcode = leetcode
     @mailer = mailer
     @problem_email_factory = problem_email_factory
@@ -8,7 +9,7 @@ class App
   end
 
   def run
-    send_problem(@leetcode.random_problem)
+    send_problem(@leetcode.random_problem(@minimum_difficulty))
   end
 
   private

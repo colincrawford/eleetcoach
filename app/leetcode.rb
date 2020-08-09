@@ -15,6 +15,12 @@ module Leetcode
       3 => Difficulty::HARD
     }
 
+    @@difficulty_level_map = {
+      Difficulty::EASY => 1,
+      Difficulty::MEDIUM => 2,
+      Difficulty::HARD => 3
+    }
+
     attr_reader :title, :id, :frontend_id
 
     def initialize(title:, slug:, id:, frontend_id:, difficulty:)
@@ -30,9 +36,14 @@ module Leetcode
     end
 
     def difficulty
-      diff = @@difficulty_map.fetch(@difficulty)
-      return "Unknown" if diff.nil?
-      diff
+      difficulty = @@difficulty_map.fetch(@difficulty)
+      return "Unknown" if difficulty.nil?
+      difficulty
+    end
+
+    def meets_minimum_difficulty(minimum_difficulty)
+      return true if minimum_difficulty.nil?
+      @difficulty >= @@difficulty_level_map[minimum_difficulty]
     end
   end
 
@@ -43,21 +54,24 @@ module Leetcode
       @problems = nil
     end
 
-    def random_problem
-      problems.sample
+    def random_problem(minimum_difficulty)
+      problems(minimum_difficulty).sample
     end
 
     private
 
-    def problems
+    def problems(minimum_difficulty)
       if @problems.nil?
-        uri = URI("https://leetcode.com/api/problems/all/")
-        resp = Net::HTTP.get(uri)
-        json = JSON.parse(resp)
-        problems = json["stat_status_pairs"].map { |p| parse_problem(p) }
-        @problems = problems
+        @problems = fetch_problems.filter { |p| p.meets_minimum_difficulty(minimum_difficulty) }
       end
       @problems
+    end
+
+    def fetch_problems
+      uri = URI("https://leetcode.com/api/problems/all/")
+      resp = Net::HTTP.get(uri)
+      json = JSON.parse(resp)
+      json["stat_status_pairs"].map { |p| parse_problem(p) }
     end
 
     def parse_problem(json)
