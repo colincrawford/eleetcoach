@@ -7,13 +7,13 @@ class Config
     if File.file?(config_file)
       begin
         @config = JSON.parse(File.read(config_file), symbolize_names: true)
-        @logger.debug("parsed file #{config_file}")
+        @logger.info { "parsed file #{config_file}" }
       rescue => err
-        @logger.error("Failed to parse config file")
+        @logger.error { "Failed to parse config file" }
         raise "Cannot Parse Config"
       end
     else
-      @logger.error("No config file found")
+      @logger.error { "No config file found" }
       raise "No Config File"
     end
   end

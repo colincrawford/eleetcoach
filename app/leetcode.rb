@@ -50,13 +50,14 @@ module Leetcode
     private
 
     def problems
-      return @problems if @problems
-
-      uri = URI("https://leetcode.com/api/problems/all/")
-      resp = Net::HTTP.get(uri)
-      json = JSON.parse(resp)
-      problems = json["stat_status_pairs"]
-      problems.map { |p| parse_problem(p) }
+      if @problems.nil?
+        uri = URI("https://leetcode.com/api/problems/all/")
+        resp = Net::HTTP.get(uri)
+        json = JSON.parse(resp)
+        problems = json["stat_status_pairs"].map { |p| parse_problem(p) }
+        @problems = problems
+      end
+      @problems
     end
 
     def parse_problem(json)

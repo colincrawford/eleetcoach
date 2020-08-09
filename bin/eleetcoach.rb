@@ -1,10 +1,6 @@
 require "logger"
 
-require_relative "config.rb"
-require_relative "leetcode.rb"
-require_relative "gmail.rb"
-require_relative "problem_email.rb"
-require_relative "app.rb"
+Dir[File.join(__dir__, '..', 'app', '*.rb')].each { |file| require file }
 
 logger = Logger.new(STDOUT)
 
