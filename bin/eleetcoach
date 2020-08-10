@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # call with the base path of the program
-DIR="$1"
+DIR="$(dirname $0 | cd; pwd)"
 
 PROGRAM="$DIR/bin/eleetcoach.rb"
 CONFIG="$DIR/config.json"
 OUTPUT_LOG="$DIR/logs/output.log"
-ERROR_LOG="$DIR/logs/error.log"
 
-ruby $PROGRAM --config $CONFIG  1>> $OUTPUT_LOG 2>> $ERROR_LOG
+ruby $PROGRAM --config $CONFIG  1>> $OUTPUT_LOG 2>> $OUTPUT_LOG
