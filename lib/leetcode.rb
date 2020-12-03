@@ -48,14 +48,15 @@ module Leetcode
   end
 
   class Client
-    def initialize(logger:)
+    def initialize(logger:, minimum_difficulty:)
       @logger = logger
       # cache problems
       @problems = nil
+      @minimum_difficulty = minimum_difficulty
     end
 
-    def random_problem(minimum_difficulty)
-      problems(minimum_difficulty).sample
+    def random_problem
+      problems(@minimum_difficulty).sample
     end
 
     private

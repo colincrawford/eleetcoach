@@ -27,24 +27,24 @@ class GMail
   end
 
   def text_content(to, from, subject, content)
-      <<~TEXT
-        From: #{from}
-        To: #{to}
-        Subject: #{subject}
+    <<~TEXT
+      From: #{from}
+      To: #{to}
+      Subject: #{subject}
 
-        #{content}
-      TEXT
+      #{content}
+    TEXT
   end
 
   def html_content(to, from, subject, content)
-      <<~HTML
-        From: #{from}
-        To: #{to}
-        Subject: #{subject}
-        MIME-Version: 1.0
-        Content-type: text/html
+    <<~HTML
+      From: #{from}
+      To: #{to}
+      Subject: #{subject}
+      MIME-Version: 1.0
+      Content-type: text/html
 
-        #{content}
-      HTML
+      #{content}
+    HTML
   end
 end
