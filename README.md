@@ -1,6 +1,8 @@
 ### Eleetcoach
 
-emails a random leetcode problem
+https://data-puzzles.com/
+
+emails a random leetcode problem + algorithm from wikipedia
 
 use in conjunction with a cronjob to do on a scheduled basis
 
