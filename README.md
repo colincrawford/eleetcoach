@@ -1,7 +1,5 @@
 ### Eleetcoach
 
-https://data-puzzles.com/
-
 emails a random leetcode problem + algorithm from wikipedia
 
 use in conjunction with a cronjob to do on a scheduled basis
@@ -12,3 +10,4 @@ use in conjunction with a cronjob to do on a scheduled basis
 - [ ] Track which problems have been sent (so as not to repeat)
 - [ ] Deploy script
 - [ ] Tests
+- [ ] https://data-puzzles.com/ integration
