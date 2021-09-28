@@ -45,6 +45,15 @@ module Leetcode
       return true if minimum_difficulty.nil?
       @difficulty >= @@difficulty_level_map[minimum_difficulty]
     end
+
+    def to_json
+      JSON::dump({
+        id: @id,
+        title: @title,
+        link: link,
+        difficulty: difficulty
+      })
+    end
   end
 
   class Client

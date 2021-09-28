@@ -1,15 +1,10 @@
 require "net/http"
 require "set"
+require "json"
 
 require "nokogiri"
 
 module Wikipedia
-  class AlgorithmEmail
-    def initialize(algorithm)
-      @algorithm = algorithm
-    end
-  end
-
   class Algorithm
     attr_reader :link, :categories
 
@@ -22,6 +17,13 @@ module Wikipedia
     def to_s
       "#{@categories.join("\n")}\nlink: #{@link}\n"
     end
+
+    def to_json
+      JSON::dump({
+        categories: @categories,
+        link: @link
+      })
+    end
   end
 
   class AlgorithmsPage
@@ -31,7 +33,7 @@ module Wikipedia
       @algorithms = nil
     end
 
-    def get_random_algorithm
+    def random_algorithm
       algorithms.sample
     end
 

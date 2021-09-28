@@ -1,4 +1,5 @@
 require "logger"
+require "sinatra"
 
 ["app", "lib"].each do |dir|
   Dir[File.join(__dir__, "..", dir, "*.rb")].sort.each do |file|
@@ -8,29 +9,35 @@ end
 
 logger = Logger.new($stdout)
 
-config_file_flag_inx = ARGV.find_index("--config")
-config_file = nil
-unless config_file_flag_inx.nil?
-  config_file = ARGV[config_file_flag_inx + 1]
-end
-config = Config.new(logger: logger, config_file: config_file)
+config = Config.new(logger: logger)
 
 leetcode = Leetcode::Client.new(
   logger: logger,
   minimum_difficulty: config.minimum_difficulty
 )
 wikipedia_algorithms = Wikipedia::AlgorithmsPage.new
-mailer = GMail.new(
-  logger: logger,
-  email: config.gmail_email,
-  password: config.gmail_password
-)
 app = App.new(
   logger: logger,
   leetcode: leetcode,
   wikipedia_algorithms: wikipedia_algorithms,
-  mailer: mailer,
-  send_list: config.send_list
 )
 
-app.run
+# Web app (Sinatra) setup
+
+def json(value)
+  content_type :json
+  value.to_json
+end
+
+get '/api/wikipedia-algorithm' do
+  json(app.wikipedia_algorithm)
+end
+
+get '/api/leetcode-problem' do
+  json(app.leetcode_problem)
+end
+
+not_found do
+  content_type :json
+  '{"msg": "Not Found", "code": 404}'
+end

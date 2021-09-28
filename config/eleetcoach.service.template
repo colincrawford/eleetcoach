@@ -1,0 +1,17 @@
+[Unit]
+Description=Eleetcoach API Server
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+WorkingDirectory=$APPDIR
+User=pi
+Group=pi
+Environment=APP_ENV=production
+ExecStart=$RVM all do bundle exec puma
+
+[Install]
+WantedBy=multi-user.target
