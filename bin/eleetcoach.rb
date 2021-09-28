@@ -8,13 +8,8 @@ require "sinatra"
 end
 
 logger = Logger.new($stdout)
-
 config = Config.new(logger: logger)
-
-leetcode = Leetcode::Client.new(
-  logger: logger,
-  minimum_difficulty: config.minimum_difficulty
-)
+leetcode = Leetcode::Client.new(logger: logger)
 wikipedia_algorithms = Wikipedia::AlgorithmsPage.new
 app = App.new(
   logger: logger,
@@ -34,7 +29,20 @@ get '/api/wikipedia-algorithm' do
 end
 
 get '/api/leetcode-problem' do
-  json(app.leetcode_problem)
+  difficulty_param = params['minimum-difficulty']
+  minimum_difficulty = Leetcode::Difficulty::MEDIUM
+
+  if difficulty_param
+    difficulty_input = Leetcode::Difficulty.parse(difficulty_param)
+
+    if difficulty_input.nil?
+      logger.warn("invalid 'minimum-difficulty' param '#{difficulty_param}'")
+    else
+      minimum_difficulty = difficulty_input
+    end
+  end
+
+  json(app.leetcode_problem(minimum_difficulty))
 end
 
 not_found do

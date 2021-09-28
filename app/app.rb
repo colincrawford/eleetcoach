@@ -13,7 +13,7 @@ class App
     @wikipedia_algorithms.random_algorithm
   end
 
-  def leetcode_problem
-    @leetcode.random_problem
+  def leetcode_problem(minimum_difficulty)
+    @leetcode.random_problem(minimum_difficulty)
   end
 end

@@ -2,10 +2,23 @@ require "net/http"
 require "json"
 
 module Leetcode
-  module Difficulty
+  class Difficulty
     EASY = "Easy"
     MEDIUM = "Medium"
     HARD = "Hard"
+
+    def self.parse(difficulty)
+      case difficulty.downcase
+      when 'easy'
+        EASY
+      when 'medium'
+        MEDIUM
+      when 'hard'
+        HARD
+      else
+        nil
+      end
+    end
   end
 
   class Problem
@@ -57,22 +70,21 @@ module Leetcode
   end
 
   class Client
-    def initialize(logger:, minimum_difficulty:)
+    def initialize(logger:)
       @logger = logger
       # cache problems
       @problems = nil
-      @minimum_difficulty = minimum_difficulty
     end
 
-    def random_problem
-      problems(@minimum_difficulty).sample
+    def random_problem(minimum_difficulty)
+      problems.filter { |p| p.meets_minimum_difficulty(minimum_difficulty) }.sample
     end
 
     private
 
-    def problems(minimum_difficulty)
+    def problems
       if @problems.nil?
-        @problems = fetch_problems.filter { |p| p.meets_minimum_difficulty(minimum_difficulty) }
+        @problems = fetch_problems
       end
       @problems
     end
