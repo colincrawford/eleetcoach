@@ -12,6 +12,7 @@ User=pi
 Group=pi
 Environment=APP_ENV=production
 ExecStart=$RVM all do bundle exec puma
+SyslogIdentifier=Eleetcoach
 
 [Install]
 WantedBy=multi-user.target
